@@ -1,0 +1,43 @@
+.top-left{
+    border-right: solid black;
+    border-bottom: solid black;
+}
+.top-middle{
+    border-right: solid black;
+    border-left: solid black;
+    border-bottom: solid black;
+}
+.top-right{
+    border-left: solid black;
+    border-bottom: solid black;
+}
+
+.left{
+    border-right: solid black;
+    border-top: solid black;
+    border-bottom: solid black;
+}
+.middle{
+    border: solid black;
+}
+.right{
+    border-left: solid black;
+    border-top: solid black;
+    border-bottom: solid black;
+}
+
+.bottom-left{
+    border-right: solid black;
+    border-top: solid black;
+}
+
+.bottom-middle{
+    border-right: solid black;
+    border-left: solid black;
+    border-top: solid black;
+}
+
+.bottom-right{
+    border-left: solid black;
+    border-top: solid black;
+}

@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameBoardComponent implements OnInit {
 
+  sections = ['','','',
+              '','','',
+              '','',''];
+              
   constructor() { }
 
   ngOnInit() {
   }
+
 
 }

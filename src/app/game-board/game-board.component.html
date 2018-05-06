@@ -1,3 +1,10 @@
-<p>
-  game-board works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-4" *ngFor="let section of sections; let i = index">
+        <app-section
+        [position]="i"
+        (click)="onSectionClicked('x')">
+        </app-section>
+    </div>
+  </div>
+</div>
