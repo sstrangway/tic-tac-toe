@@ -6,6 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { GameBoardComponent } from './game-board/game-board.component';
 import { SectionComponent } from './game-board/section/section.component';
+import { GameService } from './services/game.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { SectionComponent } from './game-board/section/section.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [GameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

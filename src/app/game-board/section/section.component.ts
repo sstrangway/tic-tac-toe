@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-section',
@@ -8,19 +9,14 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SectionComponent implements OnInit {
 
   @Input() position: number; 
-  position_class: string;
-  character = '_';
-  position_classes = ['top-left', 'top-middle', 'top-right',
-                      'left', 'middle', 'right',
-                      'bottom-left', 'bottom-middle', 'bottom-right'];
-  constructor() { }
+  @Input() character: string;
+  @Input() positionClass: string;
+  
 
-  ngOnInit() {
-    this.position_class = this.position_classes[this.position];
+  constructor(private gameService: GameService) { 
   }
 
-  onSectionClick(character:string){
-    this.character = character
+  ngOnInit() {
   }
 
 }

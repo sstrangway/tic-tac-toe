@@ -3,13 +3,13 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class GameService {
-
-  private onSectionEmit = new Subject<any>();
+  
+  public sectionSubject = new Subject<any>();
   constructor() { }
 
-  onSectionClicked(index: number, character: string){
-
-   // this.onSectionClicked.next({'index':index, 'character':character});
+  onSectionClicked(index: string, character: string){
+    let pos =  {"index":index, "character": character};
+    this.sectionSubject.next(pos);
   }
 
 }

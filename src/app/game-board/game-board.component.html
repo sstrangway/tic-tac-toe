@@ -1,9 +1,12 @@
 <div class="container">
+  {{ isGameOver }}
   <div class="row">
     <div class="col-4" *ngFor="let section of sections; let i = index">
         <app-section
         [position]="i"
-        (click)="onSectionClicked('x')">
+        [character]="sections[i]"
+        [positionClass]="positionClasses[i]" 
+        (click)="onSectionClicked(i)">
         </app-section>
     </div>
   </div>
