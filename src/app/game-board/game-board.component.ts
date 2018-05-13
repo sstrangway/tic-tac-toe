@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from '../services/game.service';
 import { Subject } from 'rxjs/Subject';
+import { ComputerService } from '../services/computer.service';
+import { Board } from '../models/board.model';
+import { Player } from '../models/player.model';
 
 @Component({
   selector: 'app-game-board',
@@ -9,8 +11,13 @@ import { Subject } from 'rxjs/Subject';
 })
 export class GameBoardComponent implements OnInit {
 
-  currentPlayerSubject = new Subject<string>();
-  currentPlayer = 'X';
+  board: Board;
+  player0: Player;
+  player1: Player;
+
+  
+  currentPlayerSubject = new Subject<Player>();
+  currentPlayer: Player;
   isGameOver = false;
 
   sections = 
@@ -24,28 +31,28 @@ export class GameBoardComponent implements OnInit {
      'left', 'middle', 'right',
      'bottom-left', 'bottom-middle', 'bottom-right'];
 
-  constructor(private gameService: GameService) { }
+  constructor(
+    private computerService: ComputerService) { }
 
   ngOnInit() {
     this.currentPlayerSubject.subscribe( (nextPlayer) => {
       this.currentPlayer = nextPlayer;
-      if(this.currentPlayer === 'O'){
-        //computer move
-        let validMoves = [];
-        for(let i = 0; i < this.sections.length; i ++){
-          if(!(this.sections[i] === 'X' || this.sections[i] === 'O')){
-            validMoves.push(i);
-          }
-        }
-        let nextMove = validMoves[Math.floor( Math.random() * validMoves.length )] + ""
-        console.log(validMoves);
-        console.log(nextMove);
+      console.log("in subscribe: ");
+      console.log(this.currentPlayer);
+      if(this.currentPlayer.isComputer){
+        let nextMove = this.computerService.getMove(this.sections);
         this.onSectionClicked(nextMove);
       }
     });
+
+    this.player0 = new Player(true, 'X');
+    this.player1 = new Player(false, 'O');
+    this.currentPlayerSubject.next(this.player0);
   }
 
-  onSectionClicked(index:string){
+  onSectionClicked(index:number){
+    console.log("In onSectionClicked");
+    console.log(this.currentPlayer);
     if(!this.isGameOver && !(this.sections[index] === 'X' || this.sections[index] === 'O')){
       this.updateBoard(index);
       this.updateWinner();
@@ -53,8 +60,8 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  updateBoard (index:string){
-    this.sections[index] = this.currentPlayer;
+  updateBoard (index:number){
+    this.sections[index] = this.currentPlayer.character;
   }
 
   updateWinner (){
@@ -73,7 +80,7 @@ export class GameBoardComponent implements OnInit {
                       condition6, condition7];
 
     for(let i = 0; i < conditions.length; i++){
-      if(conditions[i].every( (character) => { return character === this.currentPlayer; })){
+      if(conditions[i].every( (character) => { return character === this.currentPlayer.character; })){
         this.isGameOver = true;
         break;
       }
@@ -82,10 +89,13 @@ export class GameBoardComponent implements OnInit {
   }
 
   updateCurrentPlayer (){
-    if(this.currentPlayer === 'X')
-      this.currentPlayerSubject.next('O');
+    console.log(this.currentPlayer);
+    if(this.currentPlayer == this.player0)
+      this.currentPlayerSubject.next(this.player1);
     else
-      this.currentPlayerSubject.next('X');
+      this.currentPlayerSubject.next(this.player0);
+
+      
   }
 
 }

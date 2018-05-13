@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-section',
@@ -13,7 +12,7 @@ export class SectionComponent implements OnInit {
   @Input() positionClass: string;
   
 
-  constructor(private gameService: GameService) { 
+  constructor() { 
   }
 
   ngOnInit() {
