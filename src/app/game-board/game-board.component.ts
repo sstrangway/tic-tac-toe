@@ -15,7 +15,6 @@ export class GameBoardComponent implements OnInit {
   player0: Player;
   player1: Player;
 
-  
   currentPlayerSubject = new Subject<Player>();
   currentPlayer: Player;
   isGameOver = false;
