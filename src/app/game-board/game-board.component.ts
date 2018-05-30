@@ -40,23 +40,38 @@ export class GameBoardComponent implements OnInit {
       console.log(this.currentPlayer);
       if(this.currentPlayer.isComputer){
         let nextMove = this.computerService.getMove(this.sections);
-        this.onSectionClicked(nextMove);
+        setTimeout( ()=>{
+          this.onSectionClicked(nextMove, true);
+        }, 500);
       }
     });
-
-    this.player0 = new Player(true, 'X');
-    this.player1 = new Player(false, 'O');
-    this.currentPlayerSubject.next(this.player0);
+    this.startGame();
   }
 
-  onSectionClicked(index:number){
-    console.log("In onSectionClicked");
+  startGame(){
+    let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
+
+    if(player1IsComputer == 1){
+      this.player0 = new Player(true, 'X');
+      this.player1 = new Player(false, 'O');
+    } else {
+      this.player0 = new Player(false, 'X');
+      this.player1 = new Player(true, 'O');
+    }
+   
+    this.currentPlayerSubject.next(this.player0);
+  }
+  onSectionClicked(index:number, isComputer: boolean){
+    console.log("--------------")
+    console.log("In onSectionClicked " + index);
     console.log(this.currentPlayer);
-    if(!this.isGameOver && !(this.sections[index] === 'X' || this.sections[index] === 'O')){
+    if(isComputer == this.currentPlayer.isComputer &&  !this.isGameOver && !(this.sections[index] === 'X' || this.sections[index] === 'O')){
       this.updateBoard(index);
       this.updateWinner();
       this.updateCurrentPlayer();
     }
+    console.log("--------------")
+
   }
 
   updateBoard (index:number){
@@ -93,8 +108,14 @@ export class GameBoardComponent implements OnInit {
       this.currentPlayerSubject.next(this.player1);
     else
       this.currentPlayerSubject.next(this.player0);
-
-      
   }
 
+  onReset(){
+    this.sections = 
+      ['r','r','r',
+      'r','r','r',
+       'r','r','r'];  
+    this.isGameOver = false;
+    this.startGame();
+    }
 }

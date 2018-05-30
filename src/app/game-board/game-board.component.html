@@ -3,6 +3,7 @@
     [position]="i"
     [character]="sections[i]"
     [positionClass]="positionClasses[i]" 
-    (click)="onSectionClicked(i)">
+    (click)="onSectionClicked(i, false)">
     </app-section>
 </div>
+<button (click)="onReset()"> Reset </button>

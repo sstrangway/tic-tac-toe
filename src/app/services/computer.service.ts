@@ -13,5 +13,6 @@ export class ComputerService {
       }
     }
     return validMoves[Math.floor( Math.random() * validMoves.length )];
+  
   }
 }
