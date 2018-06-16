@@ -36,8 +36,6 @@ export class GameBoardComponent implements OnInit {
   ngOnInit() {
     this.currentPlayerSubject.subscribe( (nextPlayer) => {
       this.currentPlayer = nextPlayer;
-      console.log("in subscribe: ");
-      console.log(this.currentPlayer);
       if(this.currentPlayer.isComputer){
         let nextMove = this.computerService.getMove(this.sections);
         setTimeout( ()=>{
@@ -52,26 +50,21 @@ export class GameBoardComponent implements OnInit {
     let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
 
     if(player1IsComputer == 1){
-      this.player0 = new Player(true, 'X');
+      this.player0 = new Player(false, 'X');
       this.player1 = new Player(false, 'O');
     } else {
       this.player0 = new Player(false, 'X');
-      this.player1 = new Player(true, 'O');
+      this.player1 = new Player(false, 'O');
     }
    
     this.currentPlayerSubject.next(this.player0);
   }
-  onSectionClicked(index:number, isComputer: boolean){
-    console.log("--------------")
-    console.log("In onSectionClicked " + index);
-    console.log(this.currentPlayer);
+  onSectionClicked(index:number, isComputer: boolean){ 
     if(isComputer == this.currentPlayer.isComputer &&  !this.isGameOver && !(this.sections[index] === 'X' || this.sections[index] === 'O')){
       this.updateBoard(index);
       this.updateWinner();
       this.updateCurrentPlayer();
     }
-    console.log("--------------")
-
   }
 
   updateBoard (index:number){
@@ -103,7 +96,6 @@ export class GameBoardComponent implements OnInit {
   }
 
   updateCurrentPlayer (){
-    console.log(this.currentPlayer);
     if(this.currentPlayer == this.player0)
       this.currentPlayerSubject.next(this.player1);
     else
@@ -111,11 +103,18 @@ export class GameBoardComponent implements OnInit {
   }
 
   onReset(){
-    this.sections = 
-      ['r','r','r',
-      'r','r','r',
-       'r','r','r'];  
     this.isGameOver = false;
-    this.startGame();
+    this.sections = [];
+    setTimeout( ()=>{
+      this.sections = 
+      ['_','_','_',
+       '_','_','_',
+       '_','_','_'] ;
+        }, 1); 
+     this.startGame();
+    } 
+
+    trackByPosition(position: number){
+      return position;
     }
 }

@@ -1,9 +1,11 @@
-<div style="display: inline-block;" *ngFor="let section of sections; let i = index">
+<div style="display: inline-block;" 
+    *ngFor="let section of sections; let i = index; trackBy: trackByPosition">
     <app-section
-    [position]="i"
-    [character]="sections[i]"
-    [positionClass]="positionClasses[i]" 
-    (click)="onSectionClicked(i, false)">
+        (click)="onSectionClicked(i, false)"
+        [position]="i"
+        [character]="section"
+        [positionClass]="positionClasses[i]">
     </app-section>
 </div>
+
 <button (click)="onReset()"> Reset </button>
