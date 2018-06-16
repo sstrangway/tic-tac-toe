@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { ComputerService } from '../services/computer.service';
 import { Board } from '../models/board.model';
 import { Player } from '../models/player.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-board',
@@ -14,6 +15,7 @@ export class GameBoardComponent implements OnInit {
   board: Board;
   player0: Player;
   player1: Player;
+  gameType: string;
 
   currentPlayerSubject = new Subject<Player>();
   currentPlayer: Player;
@@ -31,9 +33,17 @@ export class GameBoardComponent implements OnInit {
      'bottom-left', 'bottom-middle', 'bottom-right'];
 
   constructor(
-    private computerService: ComputerService) { }
+    private computerService: ComputerService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+
+  this.activatedRoute.params.subscribe(paramsId => {
+    this.gameType = paramsId.gameType;
+    this.onReset();
+  });
+
+
     this.currentPlayerSubject.subscribe( (nextPlayer) => {
       this.currentPlayer = nextPlayer;
       if(this.currentPlayer.isComputer){
@@ -43,18 +53,31 @@ export class GameBoardComponent implements OnInit {
         }, 500);
       }
     });
+
     this.startGame();
   }
 
   startGame(){
-    let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
 
-    if(player1IsComputer == 1){
-      this.player0 = new Player(false, 'X');
-      this.player1 = new Player(false, 'O');
-    } else {
-      this.player0 = new Player(false, 'X');
-      this.player1 = new Player(false, 'O');
+    if(this.gameType === 'VS-COMPUTER') {
+      let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
+      if(player1IsComputer == 1){
+        this.player0 = new Player(true, 'X');
+        this.player1 = new Player(false, 'O');
+      } else {
+        this.player0 = new Player(true, 'X');
+        this.player1 = new Player(false, 'O');
+      }
+    }
+
+    if(this.gameType === 'VS-HUMAN') {
+        this.player0 = new Player(false, 'X');
+        this.player1 = new Player(false, 'O');
+    }
+
+    if(this.gameType === 'COMPUTER-VS-COMPUTER') {
+      this.player0 = new Player(true, 'X');
+      this.player1 = new Player(true, 'O');
     }
    
     this.currentPlayerSubject.next(this.player0);

@@ -8,6 +8,12 @@ import { GameBoardComponent } from './game-board/game-board.component';
 import { SectionComponent } from './game-board/section/section.component';
 import { ComputerService } from './services/computer.service';
 
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: ':gameType', component: GameBoardComponent },
+];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +23,8 @@ import { ComputerService } from './services/computer.service';
     SectionComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ComputerService],
   bootstrap: [AppComponent]
