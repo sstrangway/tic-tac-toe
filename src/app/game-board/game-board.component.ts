@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GameBoardComponent implements OnInit {
 
+  winningCondition;
   board: Board;
   player0: Player;
   player1: Player;
@@ -82,6 +83,7 @@ export class GameBoardComponent implements OnInit {
    
     this.currentPlayerSubject.next(this.player0);
   }
+
   onSectionClicked(index:number, isComputer: boolean){ 
     if(isComputer == this.currentPlayer.isComputer &&  !this.isGameOver && !(this.sections[index] === 'X' || this.sections[index] === 'O')){
       this.updateBoard(index);
@@ -95,6 +97,7 @@ export class GameBoardComponent implements OnInit {
   }
 
   updateWinner (){
+
     let condition0 = [this.sections[0], this.sections[1], this.sections[2]];
     let condition1 = [this.sections[3], this.sections[4], this.sections[5]];
     let condition2 = [this.sections[6], this.sections[7], this.sections[8]];
@@ -112,10 +115,12 @@ export class GameBoardComponent implements OnInit {
     for(let i = 0; i < conditions.length; i++){
       if(conditions[i].every( (character) => { return character === this.currentPlayer.character; })){
         this.isGameOver = true;
+        this.winningCondition = conditions[i];
         break;
       }
-
     }
+
+
   }
 
   updateCurrentPlayer (){
