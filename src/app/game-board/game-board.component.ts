@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ComputerService } from '../services/computer.service';
 import { Board } from '../models/board.model';
 import { Player } from '../models/player.model';
 import { ActivatedRoute } from '@angular/router';
+import { delay } from 'q';
 
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css']
 })
-export class GameBoardComponent implements OnInit {
+export class GameBoardComponent implements OnInit, OnDestroy {
+  
+  ngOnDestroy() {
+    this.currentPlayerSubject.unsubscribe();
+  }
 
   winningCondition;
   board: Board;
@@ -98,31 +103,48 @@ export class GameBoardComponent implements OnInit {
 
   updateWinner (){
 
-    let condition0 = [this.sections[0], this.sections[1], this.sections[2]];
-    let condition1 = [this.sections[3], this.sections[4], this.sections[5]];
-    let condition2 = [this.sections[6], this.sections[7], this.sections[8]];
+    let condition0 = [0, 1, 2];
+    let condition1 = [3, 4, 5];
+    let condition2 = [6, 7, 8];
 
-    let condition3 = [this.sections[0], this.sections[3], this.sections[6]];
-    let condition4 = [this.sections[1], this.sections[4], this.sections[7]];
-    let condition5 = [this.sections[2], this.sections[5], this.sections[8]];
+    let condition3 = [0, 3, 6];
+    let condition4 = [1, 4, 7];
+    let condition5 = [2, 5, 8];
 
-    let condition6 = [this.sections[0], this.sections[4], this.sections[8]];
-    let condition7 = [this.sections[6], this.sections[4], this.sections[2]];
+    let condition6 = [0, 4, 8];
+    let condition7 = [6, 4, 2];
     let conditions = [condition0, condition1, condition2, 
                       condition3, condition4, condition5,
                       condition6, condition7];
 
     for(let i = 0; i < conditions.length; i++){
-      if(conditions[i].every( (character) => { return character === this.currentPlayer.character; })){
+      if(conditions[i].every( (index) => { return this.sections[index] === this.currentPlayer.character; })){
         this.isGameOver = true;
         this.winningCondition = conditions[i];
         break;
       }
     }
 
-
+    if(this.isGameOver){
+      this.hideLosingTiles();
+    }
   }
 
+  async hideLosingTiles(){
+    let randIndex = [0,1,2,3,4,5,6,7,8]
+      .map((a) => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map((a) => a.value);
+    
+    await delay(1000);
+    while(randIndex.length > 0 ){
+      let index = randIndex.pop();
+      if( !(this.winningCondition.indexOf(index) > -1) ){
+          this.positionClasses[index] += " offScreen";
+      }
+      await delay(150);
+    }
+  }
   updateCurrentPlayer (){
     if(this.currentPlayer == this.player0)
       this.currentPlayerSubject.next(this.player1);
@@ -134,6 +156,11 @@ export class GameBoardComponent implements OnInit {
     this.isGameOver = false;
     this.sections = [];
     setTimeout( ()=>{
+      this.positionClasses = 
+      ['top-left', 'top-middle', 'top-right',
+       'left', 'middle', 'right',
+       'bottom-left', 'bottom-middle', 'bottom-right'];
+
       this.sections = 
       ['_','_','_',
        '_','_','_',
@@ -145,4 +172,6 @@ export class GameBoardComponent implements OnInit {
     trackByPosition(position: number){
       return position;
     }
+
+
 }

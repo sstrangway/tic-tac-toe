@@ -130,4 +130,5 @@
     transform: translateY(10000px);
     border: 1px solid red;
     transition: transform 1.5s; 
+    transition-timing-function: ease-in;
 }
