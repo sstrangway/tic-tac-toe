@@ -1,11 +1,14 @@
-<div style="display: inline-block;" 
-    *ngFor="let section of sections; let i = index; trackBy: trackByPosition">
-    <app-section
-        (click)="onSectionClicked(i, false)"
-        [position]="i"
-        [character]="section"
-        [positionClass]="positionClasses[i]">
-    </app-section>
+<div class="gameBoard">
+    <div style="display: inline-block;" 
+        *ngFor="let section of sections; let i = index; trackBy: trackByPosition">
+        <app-section
+            (click)="onSectionClicked(i, false)"
+            [position]="i"
+            [character]="section"
+            [positionClass]="positionClasses[i]"
+            [borderClass]="borderClasses[i]">
+        </app-section>
+    </div>
 </div>
 
 <button (click)="onReset()"> Reset </button>

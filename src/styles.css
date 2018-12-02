@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-color: #222222;
+    background-color: #272727;
     color: #dddddd
+}
+
+.gameBoard {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 537px;
+    margin-left: auto;
+    margin-right: auto;
 }

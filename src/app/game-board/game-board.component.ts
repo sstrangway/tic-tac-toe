@@ -33,10 +33,13 @@ export class GameBoardComponent implements OnInit, OnDestroy {
      '_','_','_'];
               
   
-  positionClasses = 
+  positionClasses = ['','','','','','','','',''];
+     
+  borderClasses = 
     ['top-left', 'top-middle', 'top-right',
      'left', 'middle', 'right',
      'bottom-left', 'bottom-middle', 'bottom-right'];
+
 
   constructor(
     private computerService: ComputerService,
@@ -142,7 +145,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       if( !(this.winningCondition.indexOf(index) > -1) ){
           this.positionClasses[index] += " offScreen";
       }
-      await delay(150);
+      await delay(100);
     }
   }
   updateCurrentPlayer (){
@@ -156,7 +159,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     this.isGameOver = false;
     this.sections = [];
     setTimeout( ()=>{
-      this.positionClasses = 
+      this.borderClasses = 
       ['top-left', 'top-middle', 'top-right',
        'left', 'middle', 'right',
        'bottom-left', 'bottom-middle', 'bottom-right'];
@@ -166,6 +169,9 @@ export class GameBoardComponent implements OnInit, OnDestroy {
        '_','_','_',
        '_','_','_'] ;
         }, 1); 
+
+      this.positionClasses = ['','','','','','','','',''];
+
      this.startGame();
     } 
 

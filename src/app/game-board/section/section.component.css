@@ -1,50 +1,50 @@
 .top-left{
-    border-right: solid black;
-    border-bottom: solid black;
+    border-right: solid #FF652F;
+    border-bottom: solid #FF652F;
 }
 .top-middle{
-    border-right: solid black;
-    border-left: solid black;
-    border-bottom: solid black;
+    border-right: solid #FF652F;
+    border-left: solid #FF652F;
+    border-bottom: solid #FF652F;
 }
 .top-right{
-    border-left: solid black;
-    border-bottom: solid black;
+    border-left: solid #FF652F;
+    border-bottom: solid #FF652F;
 }
 
 .left{
-    border-right: solid black;
-    border-top: solid black;
-    border-bottom: solid black;
+    border-right: solid #FF652F;
+    border-top: solid #FF652F;
+    border-bottom: solid #FF652F;
 }
 .middle{
-    border: solid black;
+    border: solid #FF652F;
 }
 .right{
-    border-left: solid black;
-    border-top: solid black;
-    border-bottom: solid black;
+    border-left: solid #FF652F;
+    border-top: solid #FF652F;
+    border-bottom: solid #FF652F;
 }
 
 .bottom-left{
-    border-right: solid black;
-    border-top: solid black;
+    border-right: solid #FF652F;
+    border-top: solid #FF652F;
 }
 
 .bottom-middle{
-    border-right: solid black;
-    border-left: solid black;
-    border-top: solid black;
+    border-right: solid #FF652F;
+    border-left: solid #FF652F;
+    border-top: solid #FF652F;
 }
 
 .bottom-right{
-    border-left: solid black;
-    border-top: solid black;
+    border-left: solid #FF652F;
+    border-top: solid #FF652F;
 }
 .square {
-    background: red;
-    width: 30vw;
-    height: 30vw;
+    width: 175px;
+    height: 175px;
+ 
     position: relative;
     display: flex;
     flex-direction: column;
@@ -69,7 +69,7 @@
     content: '';
     width: 100%;
     height: 4px; /* cross thickness */
-    background-color: black;
+    background-color: #14A76C;
 }
 
 .X::before {
@@ -93,7 +93,7 @@
     -moz-border-radius: 50%;
     border-radius: 50%;
     background: transparent;
-    border: 4px solid green;
+    border: 4px solid #FFE400;
     transition: border 1s ease;
 }
 
@@ -128,7 +128,6 @@
 
 .offScreen {
     transform: translateY(10000px);
-    border: 1px solid red;
     transition: transform 1.5s; 
     transition-timing-function: ease-in;
 }
