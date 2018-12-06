@@ -134,11 +134,19 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   async hideLosingTiles(){
-    let randIndex = [0,1,2,3,4,5,6,7,8]
+    let randIndex = this.sections.map( (character, index) => {
+      if(!(character === '_')){
+          return index;
+        }
+      })
+      .filter( (index) => {
+          return index !== undefined
+      })
       .map((a) => ({sort: Math.random(), value: a}))
       .sort((a, b) => a.sort - b.sort)
       .map((a) => a.value);
-    
+
+    console.log(randIndex);
     await delay(1000);
     while(randIndex.length > 0 ){
       let index = randIndex.pop();
