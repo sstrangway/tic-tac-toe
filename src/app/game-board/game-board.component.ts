@@ -5,6 +5,7 @@ import { Board } from '../models/board.model';
 import { Player } from '../models/player.model';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'q';
+import { containsTree } from '@angular/router/src/url_tree';
 
 @Component({
   selector: 'app-game-board',
@@ -22,6 +23,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   player0: Player;
   player1: Player;
   gameType: string;
+  isTraining = false;
+  gameDelay = 500;
 
   currentPlayerSubject = new Subject<Player>();
   currentPlayer: Player;
@@ -32,7 +35,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
      '_','_','_',
      '_','_','_'];
               
-  
+  gameLog = [];
+
   positionClasses = ['','','','','','','','',''];
      
   borderClasses = 
@@ -59,16 +63,13 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         let nextMove = this.computerService.getMove(this.sections);
         setTimeout( ()=>{
           this.onSectionClicked(nextMove, true);
-        }, 500);
+        }, this.gameDelay);
       }
     });
 
-    this.startGame();
-  }
-
-  startGame(){
-
     if(this.gameType === 'VS-COMPUTER') {
+      this.isTraining = false;
+      this.gameDelay = 500;
       let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
       if(player1IsComputer == 1){
         this.player0 = new Player(true, 'X');
@@ -80,16 +81,30 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     }
 
     if(this.gameType === 'VS-HUMAN') {
-        this.player0 = new Player(false, 'X');
-        this.player1 = new Player(false, 'O');
+      this.isTraining = false;
+      this.gameDelay = 500;
+      this.player0 = new Player(false, 'X');
+      this.player1 = new Player(false, 'O');
     }
 
     if(this.gameType === 'COMPUTER-VS-COMPUTER') {
+      this.isTraining = true;
+      this.gameDelay = 50;
       this.player0 = new Player(true, 'X');
       this.player1 = new Player(true, 'O');
     }
-   
-    this.currentPlayerSubject.next(this.player0);
+
+    this.startGame();
+  }
+
+  startGame(){
+
+    let player1IsComputer = Math.floor(Math.random() * Math.floor(2));
+    if(player1IsComputer === 1){
+      this.currentPlayerSubject.next(this.player1);
+    } else {
+      this.currentPlayerSubject.next(this.player0);
+    }
   }
 
   onSectionClicked(index:number, isComputer: boolean){ 
@@ -102,6 +117,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   updateBoard (index:number){
     this.sections[index] = this.currentPlayer.character;
+    this.gameLog.push(this.sections.toString());
   }
 
   updateWinner (){
@@ -124,12 +140,34 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       if(conditions[i].every( (index) => { return this.sections[index] === this.currentPlayer.character; })){
         this.isGameOver = true;
         this.winningCondition = conditions[i];
+        this.player0.gamesPlayed ++;
+        this.player1.gamesPlayed ++;
+        if(this.currentPlayer == this.player0){
+          this.player0.gamesWon ++;
+          console.table(this.player0);
+        } else {
+          this.player1.gamesWon ++;
+          console.table(this.player1);
+        }
         break;
       }
     }
+    if(this.sections.indexOf('_') < 0 ){
+      this.isGameOver = true;
+      this.player0.gamesPlayed ++;
+      this.player1.gamesPlayed ++;
+      this.player0.gamesTied ++;
+      this.player1.gamesTied ++;
+    }
+
 
     if(this.isGameOver){
-      this.hideLosingTiles();
+      //console.log(this.gameLog);
+      if(this.gameType === 'COMPUTER-VS-COMPUTER') {
+        this.onReset();
+      } else {
+        this.hideLosingTiles();
+      }
     }
   }
 
@@ -146,7 +184,6 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       .sort((a, b) => a.sort - b.sort)
       .map((a) => a.value);
 
-    console.log(randIndex);
     await delay(1000);
     while(randIndex.length > 0 ){
       let index = randIndex.pop();
@@ -156,6 +193,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       await delay(100);
     }
   }
+
   updateCurrentPlayer (){
     if(this.currentPlayer == this.player0)
       this.currentPlayerSubject.next(this.player1);
@@ -166,6 +204,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   onReset(){
     this.isGameOver = false;
     this.sections = [];
+    this.gameLog = [];
     setTimeout( ()=>{
       this.borderClasses = 
       ['top-left', 'top-middle', 'top-right',

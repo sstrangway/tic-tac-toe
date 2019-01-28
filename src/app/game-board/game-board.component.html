@@ -1,4 +1,16 @@
 <div class="gameBoard">
+    <div>
+        Player0: 
+        <p>
+            Games Played: {{ player0.gamesPlayed }}
+            Games Won: {{ player0.gamesWon }}
+        </p>
+        Player1: 
+        <p>
+            Games Played: {{ player1.gamesPlayed }}
+            Games Won: {{ player1.gamesWon }}
+        </p>
+    </div>
     <div style="display: inline-block;" 
         *ngFor="let section of sections; let i = index; trackBy: trackByPosition">
         <app-section

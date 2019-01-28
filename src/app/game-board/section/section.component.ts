@@ -16,8 +16,6 @@ export class SectionComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    console.log(this.position);
-  }
+  ngOnInit() {}
 
 }
