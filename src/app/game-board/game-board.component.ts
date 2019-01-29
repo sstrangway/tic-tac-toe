@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import { ComputerService } from '../services/computer.service';
 import { Board } from '../models/board.model';
 import { Player } from '../models/player.model';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'q';
 import { containsTree } from '@angular/router/src/url_tree';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-game-board',
@@ -36,6 +36,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
      '_','_','_'];
               
   gameLog = [];
+  winningGameLogs = [];
 
   positionClasses = ['','','','','','','','',''];
      
@@ -144,10 +145,22 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         this.player1.gamesPlayed ++;
         if(this.currentPlayer == this.player0){
           this.player0.gamesWon ++;
-          console.table(this.player0);
+          this.winningGameLogs.push({
+            log: this.gameLog,
+            winner: this.player0.character
+          })
+          // console.table(this.player0);
         } else {
           this.player1.gamesWon ++;
-          console.table(this.player1);
+          // console.table(this.player1);
+          this.winningGameLogs.push({
+            log: this.gameLog,
+            winner: this.player1.character
+          })
+        }
+        if(this.winningGameLogs.length === 25){
+          this.computerService.train(this.winningGameLogs);
+          this.winningGameLogs = [];
         }
         break;
       }

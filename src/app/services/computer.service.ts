@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import * as tf from '@tensorflow/tfjs';
+
 
 @Injectable()
 export class ComputerService {
@@ -14,5 +16,14 @@ export class ComputerService {
     }
     return validMoves[Math.floor( Math.random() * validMoves.length )];
   
+  }
+
+  async train(gameLog: any) {
+    console.log(gameLog);
+    // todo
+  }
+
+  predict(val) {
+    // todo
   }
 }
